@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ian Dizon — WordPress Developer · Websites &amp; Web Applications</title>
+  <meta name="description" content="Ian Dizon is a WordPress Developer and Computer Science graduate from the Philippines building custom WordPress themes, responsive websites and practical web applications.">
+  <meta name="author" content="Ian Dizon">
+  <meta name="theme-color" content="#f5f2eb" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#131211" media="(prefers-color-scheme: dark)">
+
+  <!-- Open Graph. Replace og:url with the final domain once the site is deployed, and make og:image an absolute URL. -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ian Dizon — WordPress Developer">
+  <meta property="og:description" content="Custom WordPress themes, responsive websites and practical web applications.">
+  <meta property="og:image" content="assets/images/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+
+  <!-- Theme bootstrap: runs before CSS paints, so there is no flash of the wrong theme. -->
+  <script>
+    (function () {
+      var root = document.documentElement;
+      root.classList.remove('no-js');
+      root.classList.add('js');
+      var saved = null;
+      try { saved = localStorage.getItem('theme'); } catch (e) { /* storage unavailable */ }
+      var theme = saved === 'light' || saved === 'dark'
+        ? saved
+        : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      root.setAttribute('data-theme', theme);
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+  <link rel="stylesheet" href="css/tailwind.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/main.js" defer></script>
+</head>
+
+<body class="antialiased">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ================================================================
+       HEADER
+       ================================================================ -->
+  <header class="site-header fixed inset-x-0 top-0 z-50" data-header>
+    <div class="mx-auto flex h-full max-w-page items-center justify-between px-4 sm:px-6 lg:px-10">
+      <a href="#top" class="wordmark" aria-label="Ian Dizon, back to top">IAN DIZON</a>
+
+      <nav aria-label="Primary" class="hidden md:block">
+        <ul class="flex items-center gap-9">
+          <li><a class="nav-link" href="#work" data-nav>Work</a></li>
+          <li><a class="nav-link" href="#about" data-nav>About</a></li>
+          <li><a class="nav-link" href="#experience" data-nav>Experience</a></li>
+          <li><a class="nav-link" href="#contact" data-nav>Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <button type="button" class="theme-toggle js-only" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="false">
+          <span class="t-sun" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          </span>
+          <span class="t-moon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>
+          </span>
+        </button>
+
+        <button type="button" class="menu-button js-only md:hidden" data-menu-button aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+          <span class="bars" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile menu (only reachable with JS; without JS the in-page links in the footer and sections still work) -->
+  <div id="mobile-menu" class="mobile-menu z-40 md:hidden" data-menu hidden>
+    <nav aria-label="Mobile" class="flex h-full flex-col justify-between px-4 pb-8 pt-4 sm:px-6">
+      <ul>
+        <li><a class="mobile-link" href="#work">Work <span class="label">01</span></a></li>
+        <li><a class="mobile-link" href="#about">About <span class="label">02</span></a></li>
+        <li><a class="mobile-link" href="#experience">Experience <span class="label">03</span></a></li>
+        <li><a class="mobile-link" href="#contact">Contact <span class="label">04</span></a></li>
+      </ul>
+      <div class="space-y-2 text-sm">
+        <a class="block link-line w-fit" href="mailto:dznn20@gmail.com">dznn20@gmail.com</a>
+        <a class="block link-line w-fit text-muted" href="https://github.com/DevDznn" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      </div>
+    </nav>
+  </div>
+
+  <main id="main">
+
+    <!-- ================================================================
+         HERO
+         ================================================================ -->
+    <section id="top" class="mx-auto max-w-page px-4 pb-16 pt-28 sm:px-6 sm:pt-36 lg:px-10 lg:pb-24" aria-labelledby="hero-title">
+      <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-b rule pb-5">
+        <p class="label">WordPress Developer · Philippines</p>
+        <p class="label flex items-center gap-2.5">
+          <span class="status-dot" aria-hidden="true"></span>
+          Open to opportunities
+        </p>
+      </div>
+
+      <h1 id="hero-title" class="display hero-title mt-10 max-w-[15ch] sm:mt-14">
+        Thoughtful websites. <em>Practical</em> digital solutions.
+      </h1>
+
+      <div class="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-12">
+        <dl class="order-2 grid grid-cols-2 gap-x-6 gap-y-6 text-sm lg:order-1 lg:col-span-6 lg:grid-cols-3 lg:self-end">
+          <div>
+            <dt class="label">Currently</dt>
+            <dd class="mt-1.5">WordPress Developer<br><span class="text-muted">Since July 2026</span></dd>
+          </div>
+          <div>
+            <dt class="label">Focus</dt>
+            <dd class="mt-1.5">Custom WordPress themes<br><span class="text-muted">&amp; Laravel apps</span></dd>
+          </div>
+          <div class="col-span-2 lg:col-span-1">
+            <dt class="label">Education</dt>
+            <dd class="mt-1.5">BS Computer Science<br><span class="text-muted">STI College Santa Rosa</span></dd>
+          </div>
+        </dl>
+
+        <div class="order-1 lg:order-2 lg:col-span-5 lg:col-start-8">
+          <p class="text-lg leading-relaxed sm:text-xl">
+            I'm Ian Dizon, a WordPress Developer with a Computer Science background. I build responsive websites and useful digital experiences, from custom WordPress themes to full-stack web applications.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#work" class="btn btn--solid">Explore my work <span class="arrow arrow--down" aria-hidden="true">↓</span></a>
+            <a href="#contact" class="btn btn--ghost">Let's connect</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         SELECTED WORK
+         Each project is an <article class="project">. To edit one:
+           • text: change the copy inside the article
+           • screenshot: replace the file in assets/images/ (keep the name) or update src/srcset
+           • links: add/remove the <a class="project-link"> elements — omit a link rather than leaving it empty
+           • filters: data-category takes space-separated values: websites, webapps, inventory
+         ================================================================ -->
+    <section id="work" class="border-t rule" aria-labelledby="work-title">
+      <div class="mx-auto max-w-page px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
+
+        <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p class="label">01 — Selected work</p>
+            <h2 id="work-title" class="display mt-4 text-5xl sm:text-6xl lg:text-7xl">Things I've built<span class="text-accent">.</span></h2>
+          </div>
+          <div class="js-only">
+            <p id="filter-label" class="label mb-3">Filter projects</p>
+            <div class="flex flex-wrap gap-2" role="group" aria-labelledby="filter-label" data-filters>
+              <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">All<span class="count">08</span></button>
+              <button type="button" class="filter-btn" data-filter="websites" aria-pressed="false">WordPress &amp; Websites<span class="count">04</span></button>
+              <button type="button" class="filter-btn" data-filter="webapps" aria-pressed="false">Web Applications<span class="count">04</span></button>
+              <button type="button" class="filter-btn" data-filter="inventory" aria-pressed="false">Inventory Systems<span class="count">02</span></button>
+            </div>
+          </div>
+        </div>
+        <p class="sr-only" aria-live="polite" data-filter-status></p>
+
+        <div class="mt-14 grid grid-cols-1 gap-x-10 gap-y-24 lg:mt-20 lg:grid-cols-12 lg:gap-y-32" data-projects>
+
+          <!-- ── 01 · Acclaim Dental ─────────────────────────────── -->
+          <article id="acclaim-dental" class="project grid gap-8 lg:col-span-12 lg:grid-cols-12 lg:gap-10" data-category="websites" aria-labelledby="p1-title">
+            <div class="relative pb-14 lg:col-span-8">
+              <figure class="shot">
+                <div class="shot-bar" aria-hidden="true"><i></i>acclaimdental.com.au</div>
+                <div class="shot-media">
+                  <img src="assets/images/acclaim-dental.webp"
+                       srcset="assets/images/acclaim-dental-800.webp 800w, assets/images/acclaim-dental.webp 1600w"
+                       sizes="(min-width: 1024px) 60vw, 100vw" width="1600" height="1000" decoding="async"
+                       alt="Acclaim Dental homepage: navy hero reading 'Gentle, thorough dental care for the whole family' beside a dentist photo and a 'Book today' opening-hours card.">
+                </div>
+              </figure>
+              <div class="shot-phone">
+                <img src="assets/images/acclaim-dental-mobile.webp" width="520" height="1125" loading="lazy" decoding="async"
+                     alt="Acclaim Dental homepage on a phone-sized screen.">
+              </div>
+            </div>
+
+            <div class="lg:col-span-4 lg:pt-2">
+              <div class="flex items-baseline justify-between gap-4">
+                <span class="project-num">No. 01</span>
+                <span class="label">WordPress Development</span>
+              </div>
+              <h3 id="p1-title" class="display mt-5 text-4xl sm:text-5xl">Acclaim Dental</h3>
+              <p class="mt-5 leading-relaxed text-muted">
+                A custom WordPress theme for a dental practice in Bundaberg, developed with a focus on responsive layouts, maintainable theme components, mobile usability and search-friendly website structure.
+              </p>
+              <dl class="facts mt-8 text-sm">
+                <dt class="label">My work</dt>
+                <dd>
+                  <ul class="space-y-1.5">
+                    <li>Hand-coded custom theme, converted from a static design mockup</li>
+                    <li>PHP page templates and reusable template parts</li>
+                    <li>Customizer settings for replaceable site images and a featured article</li>
+                    <li>Responsive layouts, CSS and JavaScript refinements</li>
+                    <li>Search-friendly structure, with SEO output coordinated through the site's SEO plugin</li>
+                    <li>Mobile and accessibility improvements</li>
+                  </ul>
+                </dd>
+                <dt class="label">Stack</dt>
+                <dd class="stack"><span>WordPress</span><span>PHP</span><span>HTML</span><span>CSS</span><span>JavaScript</span></dd>
+              </dl>
+              <div class="mt-8 flex flex-wrap gap-x-6 gap-y-3">
+                <a class="project-link" href="https://acclaimdental.com.au/" target="_blank" rel="noopener noreferrer">View live site <span class="arrow" aria-hidden="true">↗</span><span class="sr-only">(Acclaim Dental, opens in a new tab)</span></a>
+                <!-- Source: repository is private — add a <a class="project-link"> here if it becomes public. -->
+              </div>
+            </div>
+          </article>
+
+          <!-- ── 02 · Coral Coast Dental ─────────────────────────── -->
+          <article id="coral-coast" class="project grid gap-8 lg:col-span-12 lg:grid-cols-12 lg:gap-10" data-category="websites" aria-labelledby="p2-title">
+            <div class="lg:order-2 lg:col-span-7 lg:col-start-6">
+              <figure class="shot">
+                <div class="shot-bar" aria-hidden="true"><i></i>Coral Coast Dental · WordPress theme</div>
+                <div class="shot-media shot-media--4x3">
+                  <img src="assets/images/coral-coast.webp"
+                       srcset="assets/images/coral-coast-800.webp 800w, assets/images/coral-coast.webp 1200w"
+                       sizes="(min-width: 1024px) 55vw, 100vw" width="1200" height="900" loading="lazy" decoding="async"
+                       alt="Coral Coast Dental WordPress theme homepage: warm sand background, serif headline 'Your smile deserves the best care, right here in Bargara' with a coral underline, and a white booking card over a clinic photo.">
+                </div>
+              </figure>
+            </div>
+
+            <div class="lg:order-1 lg:col-span-4 lg:pt-2">
+              <div class="flex items-baseline justify-between gap-4">
+                <span class="project-num">No. 02</span>
+                <span class="label">WordPress Development</span>
+              </div>
+              <h3 id="p2-title" class="display mt-5 text-4xl sm:text-5xl">Coral Coast Dental</h3>
+              <p class="mt-5 leading-relaxed text-muted">
+                A custom WordPress website theme with a distinct visual identity, refined typography, responsive layouts and customizable homepage imagery, alongside a complete static HTML build of the site.
+              </p>
+              <dl class="facts mt-8 text-sm">
+                <dt class="label">My work</dt>
+                <dd>
+                  <ul class="space-y-1.5">
+                    <li>Custom WordPress theme development</li>
+                    <li>Responsive layouts and mobile refinements</li>
+                    <li>Homepage and site image customization from the WordPress admin</li>
+                    <li>Reusable theme components and editable practice details</li>
+                    <li>Styling, structure and theme documentation</li>
+                  </ul>
+                </dd>
+                <dt class="label">Stack</dt>
+                <dd class="stack"><span>WordPress</span><span>PHP</span><span>HTML</span><span>CSS</span><span>JavaScript</span></dd>
+              </dl>
+
+              <figure class="mt-8 hidden sm:block">
+                <div class="shot">
+                  <div class="shot-media">
+                    <img src="assets/images/coral-coast-static-800.webp" width="800" height="500" loading="lazy" decoding="async"
+                         alt="The static HTML build of Coral Coast Dental, with a dark ocean-toned hero and sky-blue accent text.">
+                  </div>
+                </div>
+                <figcaption class="label mt-3">Companion static HTML build</figcaption>
+              </figure>
+              <!-- Live site / source: none verified yet. The production domain currently runs a different site.
+                   Add <a class="project-link"> elements here once a public URL exists. -->
+            </div>
+          </article>
+
+          <!-- ── 03 · Dilleen Dental ─────────────────────────────── -->
+          <article id="dilleen" class="project lg:col-span-6" data-category="websites" aria-labelledby="p3-title">
+            <div class="relative pb-14">
+              <figure class="shot">
+                <div class="shot-bar" aria-hidden="true"><i></i>dilleen-dental.vercel.app</div>
+                <div class="shot-media">
+                  <img src="assets/images/dilleen.webp"
+                       srcset="assets/images/dilleen-800.webp 800w, assets/images/dilleen.webp 1600w"
+                       sizes="(min-width: 1024px) 45vw, 100vw" width="1600" height="1000" loading="lazy" decoding="async"
+                       alt="Dilleen Dental homepage: navy and white layout with the headline 'Your best smile shouldn't have to wait' beside a framed photo of the dental team.">
+                </div>
+              </figure>
+              <div class="shot-phone">
+                <img src="assets/images/dilleen-mobile.webp" width="520" height="1125" loading="lazy" decoding="async"
+                     alt="Dilleen Dental homepage on a phone-sized screen.">
+              </div>
+            </div>
+            <div class="mt-6 flex items-baseline justify-between gap-4">
+              <span class="project-num">No. 03</span>
+              <span class="label">Website Development</span>
+            </div>
+            <h3 id="p3-title" class="display mt-4 text-4xl">Dilleen Dental</h3>
+            <p class="mt-4 max-w-xl leading-relaxed text-muted">
+              A website for a family dental practice in Rockhampton. A calm navy-and-sky palette with Jost and Mulish typography, built as a modular site where shared sections are assembled from reusable partials.
+            </p>
+            <dl class="facts mt-6 text-sm">
+              <dt class="label">My work</dt>
+              <dd>
+                <ul class="space-y-1.5">
+                  <li>Page layouts for home, about, services, team and appointments</li>
+                  <li>Modular header, footer and section components loaded with JavaScript</li>
+                  <li>Responsive navigation and mobile layouts</li>
+                  <li>Structured data, metadata and a sitemap prepared for launch</li>
+                </ul>
+              </dd>
+              <dt class="label">Stack</dt>
+              <dd class="stack"><span>HTML</span><span>CSS</span><span>JavaScript</span></dd>
+            </dl>
+            <div class="mt-7 flex flex-wrap gap-x-6 gap-y-3">
+              <a class="project-link" href="https://dilleen-dental.vercel.app" target="_blank" rel="noopener noreferrer">View live prototype <span class="arrow" aria-hidden="true">↗</span><span class="sr-only">(Dilleen Dental, opens in a new tab)</span></a>
+              <a class="project-link" href="https://github.com/DevDznn/dilleen-dental-opt" target="_blank" rel="noopener noreferrer">View source <span class="arrow" aria-hidden="true">↗</span><span class="sr-only">(GitHub, opens in a new tab)</span></a>
+            </div>
+          </article>
+
+          <!-- ── 04 · Helms & White Dental ───────────────────────── -->
+          <article id="helms-white" class="project lg:col-span-6 lg:mt-40" data-category="websites" aria-labelledby="p4-title">
+            <div class="relative pb-14">
+              <figure class="shot">
+                <div class="shot-bar" aria-hidden="true"><i></i>helms-white.vercel.app</div>
+                <div class="shot-media">
+                  <img src="assets/images/helms-white.webp"
+                       srcset="assets/images/helms-white-800.webp 800w, assets/images/helms-white.webp 1600w"
+                       sizes="(min-width: 1024px) 45vw, 100vw" width="1600" height="1000" loading="lazy" decoding="async"
+                       alt="Helms &amp; White Dental homepage: soft full-bleed clinic hallway photo with a teal headline 'Modern dental care, thoughtfully delivered' and booking buttons.">
+                </div>
+              </figure>
+              <div class="shot-phone">
+                <img src="assets/images/helms-white-mobile.webp" width="520" height="1125" loading="lazy" decoding="async"
+                     alt="Helms &amp; White Dental homepage on a phone-sized screen.">
+              </div>
+            </div>
+            <div class="mt-6 flex items-baseline justify-between gap-4">
+              <span class="project-num">No. 04</span>
+              <span class="label">Website Development</span>
+            </div>
+            <h3 id="p4-title" class="display mt-4 text-4xl">Helms &amp; White</h3>
+            <p class="mt-4 max-w-xl leading-relaxed text-muted">
+              A redesign for a long-established practice in Lismore that keeps the clinic's teal identity and Manrope typography, then layers in quieter, more considered interactions. The design was later carried into a separate WordPress theme.
+            </p>
+            <dl class="facts mt-6 text-sm">
+              <dt class="label">My work</dt>
+              <dd>
+                <ul class="space-y-1.5">
+                  <li>Multi-page responsive site with scroll reveals and a live open/closed booking card</li>
+                  <li>Interactive helpers such as an emergency symptom picker and a child dental benefits eligibility checker</li>
+                  <li>WordPress theme conversion with admin settings for opening status and site images</li>
+                  <li>Visual comparison testing between the prototype and the theme</li>
+                </ul>
+              </dd>
+              <dt class="label">Stack</dt>
+              <dd class="stack"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>WordPress</span><span>PHP</span><span>Playwright</span></dd>
+            </dl>
+            <div class="mt-7 flex flex-wrap gap-x-6 gap-y-3">
+              <a class="project-link" href="https://helms-white.vercel.app" target="_blank" rel="noopener noreferrer">View live prototype <span class="arrow" aria-hidden="true">↗</span><span class="sr-only">(Helms &amp; White, opens in a new tab)</span></a>
+              <a class="project-link" href="https://github.com/DevDznn/helms---white" target="_blank" rel="noopener noreferrer">View source <span class="arrow" aria-hidden="true">↗</span><span class="sr-only">(GitHub, opens in a new tab)</span></a>
+            </div>
+          </article>
+
+          <!-- ── 05 · Job Abroad ─────────────────────────────────── -->
+          <article id="job-abroad" class="project lg:col-span-12" data-category="webapps" aria-labelledby="p5-title">
+            <figure class="shot">
+              <div class="shot-bar" aria-hidden="true"><i></i>jobabroad.online</div>
+              <div class="shot-media lg:aspect-[16/8]">
+                <img src="assets/images/job-abroad.webp"
+                     srcset="assets/images/job-abroad-800.webp 800w, assets/images/job-abroad.webp 1600w"
+                     sizes="100vw" width="1600" height="1000" loading="lazy" decoding="async"
+                     alt="Job Abroad homepage: airport departure photo behind the headline 'Find Trusted Overseas Jobs for Filipinos', with a job search bar, country selector and quick filter chips.">
+              </div>
+            </figure>
+            <div class="mt-8 grid gap-8 lg:grid-cols-12 lg:gap-10">
+              <div class="lg:col-span-5">
+                <div class="flex items-baseline justify-between gap-4">
+                  <span class="project-num">No. 05</span>
+                  <span class="label">Web Application</span>
+                </div>
+                <h3 id="p5-title" class="display mt-4 text-4xl sm:text-5xl">Job Abroad</h3>
+                <p class="mt-4 leading-relaxed text-muted">
+                  An overseas job portal for Filipino jobseekers. Candidates search and apply for verified jobs abroad, while recruitment agencies and employers post openings and manage applicants. Built in a small team, where I was one of the main contributors.
+                </p>
+              </div>
+              <dl class="facts text-sm lg:col-span-4 lg:col-start-7 lg:pt-10">
+                <dt class="label">Features I worked across</dt>
+                <dd>
+                  <ul class="space-y-1.5">
+                    <li>Candidate, employer and admin portals</li>
+                    <li>Job posts, applications and candidate resumes</li>
+                    <li>Employer verification with agency license details</li>
+                    <li>Live job, agency, country and industry search</li>
+                    <li>In-app messaging and subscription plans</li>
+                  </ul>
+                </dd>
+              </dl>
+              <div class="lg:col-span-2 lg:pt-10">
+                <p class="label">Stack</p>
+                <p class="stack mt-1.5"><span>Laravel</span><span>Livewire</span><span>Alpine.js</span><span>Tailwind CSS</span><span>MySQL</span></p>
+                <div class="mt-6">
+                  <a class="project-link" href="https://jobabroad.online" target="_blank" rel="noopener noreferrer">View live site <span class="arrow" aria-hidden="true">↗</span><span class="sr-only">(Job Abroad, opens in a new tab)</span></a>
+                  <!-- Source: team repository not owned by DevDznn — no public link added. -->
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ── 06 · RENTME ─────────────────────────────────────── -->
+          <article id="rentme" class="project lg:col-span-6" data-category="webapps" aria-labelledby="p6-title">
+            <!-- SCREENSHOT PENDING — replace this .shot-pending block with a <figure class="shot"> like the ones above,
+                 using assets/images/rentme.webp (1600×1000) and assets/images/rentme-800.webp. Ideal view: the apartment map. -->
+            <div class="shot shot-pending" role="img" aria-label="Placeholder: RENTME interface screenshot not yet added">
+              <div class="flex items-start justify-between gap-4">
+                <span class="label">Screenshot to be added</span>
+                <span class="display text-5xl text-muted/40" aria-hidden="true">06</span>
+              </div>
+              <div class="modules" aria-hidden="true">
+                <span>Apartment map</span><span>Listings</span><span>Saved apartments</span><span>Landlord portal</span><span>Admin</span>
+              </div>
+            </div>
+            <div class="mt-8 flex items-baseline justify-between gap-4">
+              <span class="project-num">No. 06</span>
+              <span class="label">Web Application</span>
+            </div>
+            <h3 id="p6-title" class="display mt-4 text-4xl">RENTME Apartment Locator</h3>
+            <p class="mt-4 max-w-xl leading-relaxed text-muted">
+              A web-based apartment management and locator system designed to help users discover apartment listings in Barangay Tagapo, Santa Rosa City, Laguna.
+            </p>
+            <dl class="facts mt-6 text-sm">
+              <dt class="label">Features</dt>
+              <dd>
+                <ul class="space-y-1.5">
+                  <li>Map-based apartment discovery with clustered markers</li>
+                  <li>Apartment listing management for landlords</li>
+                  <li>Property information, saved apartments and listing reports for tenants</li>
+                  <li>Admin tools for accounts, properties and audit logs</li>
+                  <li>Responsive web interface</li>
+                </ul>
+              </dd>
+              <dt class="label">Stack</dt>
+              <dd class="stack"><span>Laravel</span><span>PHP</span><span>JavaScript</span><span>Tailwind CSS</span><span>Leaflet</span><span>MySQL</span></dd>
+            </dl>
+            <!-- Source: repository is private. -->
+          </article>
+
+          <!-- ── 07 · ECOTEC RMS ─────────────────────────────────── -->
+          <article id="ecotec-rms" class="project lg:col-span-6 lg:mt-40" data-category="webapps inventory" aria-labelledby="p7-title">
+            <!-- SCREENSHOT PENDING — only add one with permission, and remove confidential business data first.
+                 Use assets/images/ecotec-rms.webp (1600×1000) and assets/images/ecotec-rms-800.webp. -->
+            <div class="shot shot-pending" role="img" aria-label="Placeholder: ECOTEC RMS screenshot not shown to protect business data">
+              <div class="flex items-start justify-between gap-4">
+                <span class="label">Screenshots withheld · client data</span>
+                <span class="display text-5xl text-muted/40" aria-hidden="true">07</span>
+              </div>
+              <div class="modules" aria-hidden="true">
+                <span>Item master</span><span>Receiving</span><span>Inventory</span><span>Traceability</span><span>Warehouse admin</span>
+              </div>
+            </div>
+            <div class="mt-8 flex items-baseline justify-between gap-4">
+              <span class="project-num">No. 07</span>
+              <span class="label">Warehouse Management</span>
+            </div>
+            <h3 id="p7-title" class="display mt-4 text-4xl">ECOTEC RMS</h3>
+            <p class="mt-4 max-w-xl leading-relaxed text-muted">
+              A warehouse and resource management system focused on inventory operations, master data management and item traceability. I contributed as part of the development team during my apprenticeship.
+            </p>
+            <dl class="facts mt-6 text-sm">
+              <dt class="label">My contributions</dt>
+              <dd>
+                <ul class="space-y-1.5">
+                  <li>Laravel models and database migrations</li>
+                  <li>Database architecture and ERD refinement</li>
+                  <li>Master data and warehouse administration</li>
+                  <li>Inventory workflow development support</li>
+                  <li>Containerised development environment setup</li>
+                  <li>Testing, debugging and data validation</li>
+                </ul>
+              </dd>
+              <dt class="label">Stack</dt>
+              <dd class="stack"><span>Laravel</span><span>PHP</span><span>PostgreSQL</span><span>Docker</span><span>Redis</span><span>JavaScript</span></dd>
+            </dl>
+          </article>
+
+          <!-- ── 08 · Chang Thai Tea Inventory System ────────────── -->
+          <article id="chang-thai-tea" class="project grid gap-8 lg:col-span-12 lg:grid-cols-12 lg:gap-10" data-category="inventory webapps" aria-labelledby="p8-title">
+            <div class="lg:col-span-5">
+              <!-- SCREENSHOT PENDING — replace with a <figure class="shot"> using assets/images/chang-thai-tea.webp (1600×1000)
+                   and assets/images/chang-thai-tea-800.webp. Ideal view: dashboard or stock levels. -->
+              <div class="shot shot-pending" role="img" aria-label="Placeholder: Chang Thai Tea inventory system screenshot not yet added">
+                <div class="flex items-start justify-between gap-4">
+                  <span class="label">Screenshot to be added</span>
+                  <span class="display text-5xl text-muted/40" aria-hidden="true">08</span>
+                </div>
+                <div class="modules" aria-hidden="true">
+                  <span>Stock in / out</span><span>Stock levels</span><span>Purchase orders</span><span>Sales</span><span>Reports</span>
+                </div>
+              </div>
+            </div>
+            <div class="lg:col-span-6 lg:col-start-7">
+              <div class="flex items-baseline justify-between gap-4">
+                <span class="project-num">No. 08</span>
+                <span class="label">Inventory Management System</span>
+              </div>
+              <h3 id="p8-title" class="display mt-4 text-4xl sm:text-5xl">Chang Thai Tea Inventory</h3>
+              <p class="mt-4 leading-relaxed text-muted">
+                An inventory and sales system for a milk tea business. It tracks ingredients and products from purchase order to sale, so staff can see what is in stock and owners can review sales and inventory reports.
+              </p>
+              <div class="mt-6 grid gap-6 sm:grid-cols-2">
+                <dl class="facts text-sm">
+                  <dt class="label">Features</dt>
+                  <dd>
+                    <ul class="space-y-1.5">
+                      <li>Products, add-ons, categories and a master item list with minimum stock levels</li>
+                      <li>Suppliers and purchase orders with receiving</li>
+                      <li>Stock-in, stock-out and stock level monitoring</li>
+                    </ul>
+                  </dd>
+                </dl>
+                <dl class="facts text-sm">
+                  <dt class="label sm:invisible" aria-hidden="true">More</dt>
+                  <dd>
+                    <ul class="space-y-1.5">
+                      <li>Sales recording with add-ons and payments</li>
+                      <li>Sales and inventory reports with PDF export</li>
+                      <li>Admin and staff roles, plus database backup and restore</li>
+                    </ul>
+                  </dd>
+                </dl>
+              </div>
+              <p class="label mt-6">Stack</p>
+              <p class="stack mt-1.5"><span>Laravel</span><span>PHP</span><span>Tailwind CSS</span><span>JavaScript</span><span>Chart.js</span><span>MySQL</span></p>
+              <!-- Source: repository is private. -->
+            </div>
+          </article>
+
+        </div>
+
+        <p class="mt-24 flex flex-wrap items-baseline gap-x-3 gap-y-2 border-t rule pt-6 text-sm text-muted">
+          More code, experiments and smaller projects live on
+          <a class="project-link text-ink" href="https://github.com/DevDznn" target="_blank" rel="noopener noreferrer">github.com/DevDznn <span class="arrow" aria-hidden="true">↗</span><span class="sr-only">(opens in a new tab)</span></a>
+        </p>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         ABOUT + SKILLS
+         ================================================================ -->
+    <section id="about" class="border-t rule bg-surface/50" aria-labelledby="about-title">
+      <div class="mx-auto max-w-page px-4 py-16 sm:px-6 lg:px-10 lg:py-28">
+        <div class="grid gap-10 lg:grid-cols-12">
+          <div class="lg:col-span-3">
+            <p class="label">02 — About</p>
+            <h2 id="about-title" class="sr-only">About Ian</h2>
+          </div>
+          <div class="lg:col-span-8 lg:col-start-5">
+            <p class="display text-3xl leading-[1.15] sm:text-4xl lg:text-[2.9rem]">
+              I'm Ian Dizon, a WordPress Developer and Computer Science graduate from the Philippines.
+            </p>
+            <div class="mt-10 grid gap-6 text-base leading-relaxed text-muted sm:grid-cols-2 sm:gap-10">
+              <p>My work spans custom WordPress themes, responsive website development and practical web applications. I also have experience working with Laravel, database structures, inventory systems and software testing.</p>
+              <p>I enjoy understanding how a product works, improving the details that shape the user experience, and building solutions that are useful beyond just their appearance.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-20 grid gap-10 lg:mt-28 lg:grid-cols-12">
+          <div class="lg:col-span-3">
+            <h3 class="label">Skills &amp; tools</h3>
+          </div>
+          <div class="grid grid-cols-2 gap-x-8 gap-y-10 text-sm lg:col-span-8 lg:col-start-5 lg:grid-cols-4">
+            <div>
+              <h4 class="font-medium">WordPress</h4>
+              <ul class="mt-3 space-y-1.5 text-muted">
+                <li>Custom themes</li><li>PHP templates</li><li>Responsive design</li><li>SEO implementation</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-medium">Frontend</h4>
+              <ul class="mt-3 space-y-1.5 text-muted">
+                <li>HTML5 &amp; CSS3</li><li>JavaScript</li><li>Tailwind CSS</li><li>ReactJS</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-medium">Backend &amp; data</h4>
+              <ul class="mt-3 space-y-1.5 text-muted">
+                <li>Laravel</li><li>PHP</li><li>MySQL</li><li>PostgreSQL</li><li>REST APIs</li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-medium">Workflow</h4>
+              <ul class="mt-3 space-y-1.5 text-muted">
+                <li>Git &amp; GitHub</li><li>Docker</li><li>Redis</li><li>Database modeling</li><li>Debugging &amp; testing</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         EXPERIENCE + EDUCATION
+         ================================================================ -->
+    <section id="experience" class="border-t rule" aria-labelledby="experience-title">
+      <div class="mx-auto max-w-page px-4 py-16 sm:px-6 lg:px-10 lg:py-28">
+        <div class="grid gap-10 lg:grid-cols-12">
+          <div class="lg:col-span-3">
+            <p class="label">03 — Experience</p>
+            <h2 id="experience-title" class="display mt-4 text-5xl">Where I've worked</h2>
+          </div>
+
+          <ol class="lg:col-span-8 lg:col-start-5">
+            <!-- Add or edit roles here. The employer line is optional — leave it out rather than guessing. -->
+            <li class="row grid gap-3 py-8 sm:grid-cols-[11rem_1fr] sm:gap-8">
+              <p class="label pt-1.5">Jul 2026 — Present</p>
+              <div>
+                <div class="flex flex-wrap items-center gap-3">
+                  <h3 class="text-xl font-medium">WordPress Developer</h3>
+                  <span class="tag">Current</span>
+                </div>
+                <p class="mt-3 max-w-2xl leading-relaxed text-muted">
+                  WordPress development focused on dental website projects, including custom theme implementation, responsive design, front-end refinements and SEO-related implementation.
+                </p>
+              </div>
+            </li>
+            <li class="row grid gap-3 py-8 sm:grid-cols-[11rem_1fr] sm:gap-8">
+              <p class="label pt-1.5">Jun — Sep 2026</p>
+              <div>
+                <div class="flex flex-wrap items-center gap-3">
+                  <h3 class="text-xl font-medium">Software Development / QA Apprentice</h3>
+                  <span class="tag">Apprenticeship</span>
+                </div>
+                <p class="mt-1 text-muted">ECOTEC LTD.</p>
+                <p class="mt-3 max-w-2xl leading-relaxed text-muted">
+                  Contributed to warehouse management system development: database structures, administrative interfaces, testing, debugging and data validation.
+                </p>
+              </div>
+            </li>
+            <li class="row grid gap-3 py-8 sm:grid-cols-[11rem_1fr] sm:gap-8">
+              <p class="label pt-1.5">Jan — Apr 2026</p>
+              <div>
+                <div class="flex flex-wrap items-center gap-3">
+                  <h3 class="text-xl font-medium">Junior Developer / Intern</h3>
+                  <span class="tag">Internship</span>
+                </div>
+                <p class="mt-1 text-muted">Smart Inbox Technology</p>
+                <p class="mt-3 max-w-2xl leading-relaxed text-muted">
+                  Contributed to the OFW Tulong project, supporting Laravel and MySQL development, data verification, testing and troubleshooting.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <div class="mt-20 grid gap-10 lg:mt-24 lg:grid-cols-12">
+          <div class="lg:col-span-3">
+            <h2 class="label">Education</h2>
+          </div>
+          <ul class="lg:col-span-8 lg:col-start-5">
+            <li class="row grid gap-1 py-6 sm:grid-cols-[11rem_1fr] sm:gap-8">
+              <p class="label pt-1">2023 — 2026</p>
+              <div>
+                <h3 class="font-medium">Bachelor of Science in Computer Science</h3>
+                <p class="mt-0.5 text-muted">STI College Santa Rosa</p>
+              </div>
+            </li>
+            <li class="row grid gap-1 py-6 sm:grid-cols-[11rem_1fr] sm:gap-8">
+              <p class="label pt-1">2020 — 2022</p>
+              <div>
+                <h3 class="font-medium">Aircraft Maintenance Technology</h3>
+                <p class="mt-0.5 text-muted">University of Perpetual Help System Laguna</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         CONTACT
+         ================================================================ -->
+    <section id="contact" class="border-t rule" aria-labelledby="contact-title">
+      <div class="mx-auto max-w-page px-4 py-16 sm:px-6 lg:px-10 lg:py-28">
+        <p class="label">04 — Contact</p>
+        <h2 id="contact-title" class="display contact-title mt-6 max-w-[12ch]">Have something worth <em>building?</em></h2>
+
+        <div class="mt-12 grid gap-12 lg:mt-16 lg:grid-cols-12">
+          <div class="lg:col-span-7">
+            <p class="max-w-md text-lg leading-relaxed text-muted">
+              I'm open to opportunities to build useful websites, contribute to meaningful projects, and continue growing as a developer.
+            </p>
+            <a href="mailto:dznn20@gmail.com" class="display contact-email mt-8 inline-flex items-baseline gap-3 link-line">
+              dznn20@gmail.com <span class="arrow text-accent" aria-hidden="true">↗</span>
+            </a>
+          </div>
+
+          <ul class="text-sm lg:col-span-4 lg:col-start-9">
+            <li class="row flex items-center justify-between gap-4 py-4">
+              <span class="label">Email</span>
+              <a class="link-line" href="mailto:dznn20@gmail.com">dznn20@gmail.com</a>
+            </li>
+            <li class="row flex items-center justify-between gap-4 py-4">
+              <span class="label">Mobile</span>
+              <a class="link-line" href="tel:+639506911803">0950 691 1803</a>
+            </li>
+            <li class="row flex items-center justify-between gap-4 py-4">
+              <span class="label">GitHub</span>
+              <a class="link-line" href="https://github.com/DevDznn" target="_blank" rel="noopener noreferrer">DevDznn <span aria-hidden="true">↗</span><span class="sr-only">(opens in a new tab)</span></a>
+            </li>
+            <li class="row flex items-center justify-between gap-4 py-4">
+              <span class="label">LinkedIn</span>
+              <a class="link-line" href="https://www.linkedin.com/in/ian-dizon-534004169" target="_blank" rel="noopener noreferrer">Ian Dizon <span aria-hidden="true">↗</span><span class="sr-only">(opens in a new tab)</span></a>
+            </li>
+            <li class="row flex items-center justify-between gap-4 py-4">
+              <span class="label">Facebook</span>
+              <a class="link-line" href="https://www.facebook.com/iamdizonian" target="_blank" rel="noopener noreferrer">iamdizonian <span aria-hidden="true">↗</span><span class="sr-only">(opens in a new tab)</span></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================================================================
+       FOOTER
+       ================================================================ -->
+  <footer class="border-t rule">
+    <div class="mx-auto flex max-w-page flex-col gap-6 px-4 py-10 text-sm sm:px-6 md:flex-row md:items-center md:justify-between lg:px-10">
+      <p>
+        <span class="wordmark">IAN DIZON</span>
+        <span class="text-muted"> — WordPress Developer</span>
+      </p>
+      <p class="display text-lg italic text-muted">Built with care, refined through iteration.</p>
+      <div class="flex items-center gap-6">
+        <a class="link-line" href="https://github.com/DevDznn" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> (opens in a new tab)</span></a>
+        <a class="link-line" href="https://www.linkedin.com/in/ian-dizon-534004169" target="_blank" rel="noopener noreferrer">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a>
+        <span class="label">© <span data-year>2026</span></span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

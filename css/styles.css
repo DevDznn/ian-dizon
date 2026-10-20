@@ -1,0 +1,455 @@
+/* ==========================================================================
+   Ian Dizon — Portfolio
+   Hand-written styles: design tokens, themes and the few components that
+   Tailwind utilities would make hard to read. Layout lives in index.html.
+   ========================================================================== */
+
+/* ---------- 1. Tokens ---------------------------------------------------- */
+/* Colours are stored as "R G B" so Tailwind can apply alpha (see tailwind.config.js). */
+:root {
+  /* Light — warm ivory paper, near-black ink, oxide accent */
+  --paper: 245 242 235;
+  --surface: 237 233 224;
+  --ink: 24 23 20;
+  --muted: 104 99 90;
+  --line: 214 208 196;
+  --accent: 164 64 38;
+  --shot-shadow: 0 1px 0 rgb(0 0 0 / 0.04), 0 18px 40px -24px rgb(40 30 10 / 0.35);
+  --grain-opacity: 0.35;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --header-h: 4rem;
+  color-scheme: light;
+}
+
+/* Dark — deep charcoal, softened white, a warmer accent so it holds contrast */
+:root[data-theme="dark"] {
+  --paper: 19 18 17;
+  --surface: 29 28 26;
+  --ink: 236 232 223;
+  --muted: 157 151 140;
+  --line: 52 50 46;
+  --accent: 232 133 100;
+  --shot-shadow: 0 1px 0 rgb(255 255 255 / 0.03), 0 24px 48px -28px rgb(0 0 0 / 0.9);
+  --grain-opacity: 0.12;
+  color-scheme: dark;
+}
+
+/* No-JS fallback: follow the OS until a choice has been stored */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --paper: 19 18 17;
+    --surface: 29 28 26;
+    --ink: 236 232 223;
+    --muted: 157 151 140;
+    --line: 52 50 46;
+    --accent: 232 133 100;
+    --shot-shadow: 0 1px 0 rgb(255 255 255 / 0.03), 0 24px 48px -28px rgb(0 0 0 / 0.9);
+    --grain-opacity: 0.12;
+    color-scheme: dark;
+  }
+}
+
+/* ---------- 2. Base ------------------------------------------------------ */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 1rem);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: rgb(var(--paper));
+  color: rgb(var(--ink));
+  font-family: Geist, ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "ss01", "cv11";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Theme changes fade instead of snapping (only after first paint, see main.js) */
+.theme-ready body,
+.theme-ready .site-header,
+.theme-ready .shot,
+.theme-ready .rule {
+  transition: background-color 0.35s var(--ease), color 0.35s var(--ease), border-color 0.35s var(--ease);
+}
+
+::selection { background: rgb(var(--accent) / 0.22); }
+
+:focus-visible {
+  outline: 2px solid rgb(var(--accent));
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  padding: 0.6rem 0.9rem;
+  background: rgb(var(--ink));
+  color: rgb(var(--paper));
+  font-size: 0.875rem;
+}
+.skip-link:focus { top: 1rem; }
+
+/* Serif display type */
+.display {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 0.95;
+}
+.display em { font-style: italic; color: rgb(var(--accent)); }
+
+/* Small uppercase label used for eyebrows, categories and metadata */
+.label {
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(var(--muted));
+}
+
+/* Text link with an underline that draws in */
+.link-line {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.35s var(--ease), color 0.2s;
+}
+.link-line:hover, .link-line:focus-visible { background-size: 100% 1px; }
+
+/* Arrow that nudges on hover */
+.arrow { display: inline-block; transition: transform 0.3s var(--ease); }
+a:hover .arrow, a:focus-visible .arrow { transform: translate(3px, -3px); }
+a:hover .arrow--down, a:focus-visible .arrow--down { transform: translateY(3px); }
+
+/* ---------- 3. Header & navigation -------------------------------------- */
+.site-header {
+  height: var(--header-h);
+  background: rgb(var(--paper) / 0.86);
+  backdrop-filter: saturate(1.4) blur(10px);
+  -webkit-backdrop-filter: saturate(1.4) blur(10px);
+  border-bottom: 1px solid transparent;
+}
+.site-header.is-scrolled { border-bottom-color: rgb(var(--line)); }
+
+.wordmark {
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+}
+
+.nav-link {
+  position: relative;
+  font-size: 0.875rem;
+  color: rgb(var(--muted));
+  transition: color 0.2s;
+}
+.nav-link:hover, .nav-link[aria-current="true"] { color: rgb(var(--ink)); }
+.nav-link[aria-current="true"]::before {
+  content: "";
+  position: absolute;
+  left: -0.75rem;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgb(var(--accent));
+  transform: translateY(-50%);
+}
+
+/* Theme toggle: a compact two-state switch */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid rgb(var(--line));
+  border-radius: 999px;
+  color: rgb(var(--muted));
+}
+.theme-toggle span {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  transition: background-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+.theme-toggle svg { width: 14px; height: 14px; }
+:root:not([data-theme="dark"]) .theme-toggle .t-sun,
+:root[data-theme="dark"] .theme-toggle .t-moon {
+  background: rgb(var(--ink));
+  color: rgb(var(--paper));
+}
+.theme-toggle:hover { border-color: rgb(var(--muted)); }
+
+/* The toggle and menu button need JS; hide them when it is unavailable */
+.no-js .js-only { display: none !important; }
+
+/* Mobile menu */
+.menu-button { width: 2.5rem; height: 2.5rem; display: grid; place-items: center; }
+@media (min-width: 768px) { .menu-button { display: none; } }
+.menu-button .bars { position: relative; width: 18px; height: 8px; }
+.menu-button .bars::before,
+.menu-button .bars::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+  transition: transform 0.3s var(--ease), top 0.3s var(--ease);
+}
+.menu-button .bars::before { top: 0; }
+.menu-button .bars::after { top: 6.5px; }
+.menu-button[aria-expanded="true"] .bars::before { top: 3.25px; transform: rotate(45deg); }
+.menu-button[aria-expanded="true"] .bars::after { top: 3.25px; transform: rotate(-45deg); }
+
+.mobile-menu {
+  position: fixed;
+  inset: var(--header-h) 0 0 0;
+  background: rgb(var(--paper));
+  border-top: 1px solid rgb(var(--line));
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease), visibility 0s linear 0.3s;
+}
+.mobile-menu.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.mobile-menu a.mobile-link {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid rgb(var(--line));
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: 2.25rem;
+  line-height: 1;
+}
+
+/* ---------- 4. Hero ------------------------------------------------------ */
+.status-dot {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #3f9a5b;
+}
+.status-dot::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid #3f9a5b;
+  opacity: 0;
+  animation: pulse 2.6s var(--ease) infinite;
+}
+@keyframes pulse {
+  0% { transform: scale(0.6); opacity: 0.7; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.hero-title { font-size: clamp(3.1rem, 9.4vw, 8.25rem); }
+
+/* Buttons — square-cornered, quiet */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.25rem;
+  font-size: 0.9rem;
+  border: 1px solid rgb(var(--ink));
+  transition: background-color 0.25s var(--ease), color 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+.btn--solid { background: rgb(var(--ink)); color: rgb(var(--paper)); }
+.btn--solid:hover { background: rgb(var(--accent)); border-color: rgb(var(--accent)); color: rgb(var(--paper)); }
+.btn--ghost:hover { background: rgb(var(--ink)); color: rgb(var(--paper)); }
+
+.rule { border-color: rgb(var(--line)); }
+
+/* ---------- 5. Project showcase ----------------------------------------- */
+.filter-btn {
+  font-size: 0.8125rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid rgb(var(--line));
+  border-radius: 999px;
+  color: rgb(var(--muted));
+  transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+}
+.filter-btn:hover { color: rgb(var(--ink)); border-color: rgb(var(--muted)); }
+.filter-btn[aria-pressed="true"] {
+  background: rgb(var(--ink));
+  border-color: rgb(var(--ink));
+  color: rgb(var(--paper));
+}
+.filter-btn .count { font-family: "Geist Mono", monospace; font-size: 0.6875rem; opacity: 0.6; margin-left: 0.25rem; }
+
+.project[hidden] { display: none; }
+.project.is-entering { animation: enter 0.5s var(--ease) both; }
+@keyframes enter { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+.project-num {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-size: 1.125rem;
+  font-style: italic;
+  color: rgb(var(--accent));
+}
+
+/* Screenshot frame — a thin browser chrome with the real domain */
+.shot {
+  position: relative;
+  background: rgb(var(--surface));
+  border: 1px solid rgb(var(--line));
+  box-shadow: var(--shot-shadow);
+  overflow: hidden;
+}
+.shot-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  height: 1.9rem;
+  padding: 0 0.75rem;
+  border-bottom: 1px solid rgb(var(--line));
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.04em;
+  color: rgb(var(--muted));
+  white-space: nowrap;
+  overflow: hidden;
+}
+.shot-bar i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgb(var(--line));
+  box-shadow: 10px 0 0 rgb(var(--line)), 20px 0 0 rgb(var(--line));
+  margin-right: 1.25rem;
+  flex: none;
+}
+.shot-media { overflow: hidden; aspect-ratio: 16 / 10; }
+.shot-media--4x3 { aspect-ratio: 4 / 3; }
+.shot-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.9s var(--ease);
+}
+.project:hover .shot-media img { transform: scale(1.015); }
+
+/* Phone-sized companion screenshot, overlapping the desktop frame */
+.shot-phone {
+  position: absolute;
+  right: 4%;
+  bottom: 0;
+  width: 22%;
+  min-width: 92px;
+  aspect-ratio: 390 / 844;
+  border: 1px solid rgb(var(--line));
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgb(var(--surface));
+  box-shadow: var(--shot-shadow), 0 0 0 5px rgb(var(--paper));
+}
+.shot-phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+
+/* Placeholder used until a real interface screenshot is added */
+.shot-pending {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(1rem, 3vw, 2rem);
+  background-color: rgb(var(--surface));
+  background-image:
+    linear-gradient(rgb(var(--line) / 0.6) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--line) / 0.6) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: -1px -1px;
+}
+.shot-pending .modules { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.shot-pending .modules span {
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 0.6875rem;
+  padding: 0.3rem 0.55rem;
+  background: rgb(var(--paper));
+  border: 1px solid rgb(var(--line));
+  color: rgb(var(--ink));
+}
+
+/* Definition list inside each project */
+.facts dt { margin-bottom: 0.35rem; }
+.facts dd + dt { margin-top: 1.25rem; }
+.facts ul li { position: relative; padding-left: 1rem; }
+.facts ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 0.45rem;
+  height: 1px;
+  background: rgb(var(--muted));
+}
+
+.stack { font-family: "Geist Mono", ui-monospace, monospace; font-size: 0.75rem; color: rgb(var(--muted)); }
+.stack span:not(:last-child)::after { content: " / "; opacity: 0.5; }
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.875rem;
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgb(var(--ink));
+  transition: color 0.2s, border-color 0.2s;
+}
+.project-link:hover { color: rgb(var(--accent)); border-color: rgb(var(--accent)); }
+
+/* ---------- 6. Lists (experience, education, skills) -------------------- */
+.row { border-top: 1px solid rgb(var(--line)); }
+.row:last-child { border-bottom: 1px solid rgb(var(--line)); }
+
+.tag {
+  display: inline-block;
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.45rem;
+  border: 1px solid rgb(var(--line));
+  color: rgb(var(--muted));
+  white-space: nowrap;
+}
+
+/* ---------- 7. Contact -------------------------------------------------- */
+.contact-title { font-size: clamp(2.75rem, 8.5vw, 7.5rem); }
+.contact-email { font-size: clamp(1.4rem, 4.2vw, 3rem); word-break: break-word; }
+
+/* ---------- 8. Motion preferences --------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .project:hover .shot-media img { transform: none; }
+}
+
+/* When a filter is active, drop the staggered offsets so the grid closes up */
+@media (min-width: 1024px) {
+  .is-filtered .project { margin-top: 0; }
+}
