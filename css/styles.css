@@ -151,8 +151,9 @@ a:hover .arrow--down, a:focus-visible .arrow--down { transform: translateY(3px);
   color: rgb(var(--muted));
   transition: color 0.2s;
 }
-.nav-link:hover, .nav-link[aria-current="true"] { color: rgb(var(--ink)); }
-.nav-link[aria-current="true"]::before {
+.nav-link:hover, .nav-link:focus-visible, .nav-link[aria-current="true"] { color: rgb(var(--ink)); }
+/* Active-section dot: always rendered, so it can ease in and out between sections */
+.nav-link::before {
   content: "";
   position: absolute;
   left: -0.75rem;
@@ -161,8 +162,11 @@ a:hover .arrow--down, a:focus-visible .arrow--down { transform: translateY(3px);
   height: 4px;
   border-radius: 50%;
   background: rgb(var(--accent));
-  transform: translateY(-50%);
+  opacity: 0;
+  transform: translateY(-50%) scale(0);
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
 }
+.nav-link[aria-current="true"]::before { opacity: 1; transform: translateY(-50%) scale(1); }
 
 /* Theme toggle: a compact two-state switch */
 .theme-toggle {
@@ -263,6 +267,36 @@ a:hover .arrow--down, a:focus-visible .arrow--down { transform: translateY(3px);
 
 .hero-title { font-size: clamp(3.1rem, 9.4vw, 8.25rem); }
 
+/* Typed role in the eyebrow (built by main.js). Every phrase is stacked invisibly in the
+   same grid cell, so the box is always as wide as the longest one and nothing shifts. */
+.typed-box { display: inline-grid; vertical-align: bottom; }
+.typed-box > * { grid-area: 1 / 1; white-space: nowrap; }
+.typed-sizer { visibility: hidden; padding-right: 0.5em; }
+.typed-cursor {
+  display: inline-block;
+  width: 1px;
+  height: 1.05em;
+  margin-left: 0.2em;
+  vertical-align: -0.15em;
+  background: rgb(var(--accent));
+  animation: caret 1.1s steps(1) infinite;
+}
+.typed.is-busy .typed-cursor { animation: none; }
+.typed.is-paused .typed-cursor { animation-play-state: paused; }
+@keyframes caret { 50% { opacity: 0; } }
+
+/* Entrance on first load: short and staggered, never long enough to feel like a loader */
+.intro { animation: intro-rise 0.65s var(--ease) both; }
+.site-header.intro { animation: intro-fade 0.5s var(--ease) both; }
+.intro--1 { animation-delay: 60ms; }
+.intro--2 { animation-delay: 120ms; }
+.intro--3 { animation-delay: 240ms; }
+.intro--4 { animation-delay: 330ms; }
+.intro--5 { animation-delay: 400ms; }
+.intro--6 { animation-delay: 460ms; }
+@keyframes intro-rise { from { opacity: 0; transform: translateY(14px); } }
+@keyframes intro-fade { from { opacity: 0; } }
+
 /* Buttons — square-cornered, quiet */
 .btn {
   display: inline-flex;
@@ -347,7 +381,10 @@ a:hover .arrow--down, a:focus-visible .arrow--down { transform: translateY(3px);
   object-position: top center;
   transition: transform 0.9s var(--ease);
 }
-.project:hover .shot-media img { transform: scale(1.015); }
+/* Hover-only: on touch screens a tap would otherwise leave the image stuck zoomed */
+@media (hover: hover) and (pointer: fine) {
+  .project:hover .shot-media img { transform: scale(1.02); }
+}
 
 /* Phone-sized companion screenshot, overlapping the desktop frame */
 .shot-phone {
@@ -416,7 +453,19 @@ a:hover .arrow--down, a:focus-visible .arrow--down { transform: translateY(3px);
   border-bottom: 1px solid rgb(var(--ink));
   transition: color 0.2s, border-color 0.2s;
 }
-.project-link:hover { color: rgb(var(--accent)); border-color: rgb(var(--accent)); }
+.project-link:hover,
+.project-link:focus-visible,
+.project-link:active { color: rgb(var(--accent)); border-color: rgb(var(--accent)); }
+
+/* The ↗ slips out to the top-right and comes back in from the bottom-left, settling on the nudged spot */
+@media (hover: hover) and (pointer: fine) {
+  .project-link:hover .arrow { animation: arrow-cycle 0.5s var(--ease); }
+}
+@keyframes arrow-cycle {
+  45% { transform: translate(8px, -8px); opacity: 0; }
+  46% { transform: translate(-5px, 5px); opacity: 0; }
+  100% { transform: translate(3px, -3px); opacity: 1; }
+}
 
 /* ---------- 6. Lists (experience, education, skills) -------------------- */
 .row { border-top: 1px solid rgb(var(--line)); }
@@ -438,15 +487,43 @@ a:hover .arrow--down, a:focus-visible .arrow--down { transform: translateY(3px);
 .contact-title { font-size: clamp(2.75rem, 8.5vw, 7.5rem); }
 .contact-email { font-size: clamp(1.4rem, 4.2vw, 3rem); word-break: break-word; }
 
-/* ---------- 8. Motion preferences --------------------------------------- */
+/* ---------- 8. Scroll reveals ------------------------------------------- */
+/* main.js adds .reveal only to elements that start below the fold, so content is never
+   hidden without JS, and anything already on screen is left alone. */
+:root { --reveal-y: 18px; }
+@media (max-width: 639px) { :root { --reveal-y: 10px; } }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(var(--reveal-y));
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+/* Outranks the theme-fade rule on .shot / .rule, keeping its colour transitions */
+.theme-ready .reveal {
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease),
+    background-color 0.35s var(--ease), color 0.35s var(--ease), border-color 0.35s var(--ease);
+}
+.reveal.is-visible,
+.reveal:focus-within { opacity: 1; transform: none; }
+/* Screenshots settle from a hair larger as their frame fades in */
+.reveal:not(.is-visible) .shot-media img { transform: scale(1.03); }
+
+@media print {
+  .reveal { opacity: 1 !important; transform: none !important; }
+}
+
+/* ---------- 9. Motion preferences --------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+    transition-delay: 0s !important;
   }
   .project:hover .shot-media img { transform: none; }
+  .project-link:hover .arrow { animation: none; }
 }
 
 /* When a filter is active, drop the staggered offsets so the grid closes up */

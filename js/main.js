@@ -4,13 +4,16 @@
  *   2. Mobile navigation
  *   3. Project filters
  *   4. Header state + active section in the nav
- *   5. Footer year
+ *   5. Typed role in the hero
+ *   6. Scroll reveals
+ *   7. Footer year
  */
 (function () {
   'use strict';
 
   var root = document.documentElement;
   var STORAGE_KEY = 'theme';
+  var reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
   /* ---------- 1. Theme ------------------------------------------------ */
   var storage = {
@@ -136,6 +139,8 @@
         if (match) {
           shown++;
           if (wasHidden) {
+            // The card's own entrance replaces any scroll reveal still pending inside it
+            Array.prototype.forEach.call(p.querySelectorAll('.reveal'), function (el) { el.classList.remove('reveal'); });
             void p.offsetWidth; // restart the entrance animation
             p.classList.add('is-entering');
           }
@@ -183,7 +188,119 @@
     });
   }
 
-  /* ---------- 5. Footer year ----------------------------------------- */
+  /* ---------- 5. Typed role ------------------------------------------ */
+  // The markup already holds the first role, which is what shows without JS or with
+  // reduced motion. Screen readers get that static text; the animated copy is hidden from them.
+  var typed = document.querySelector('[data-typed]');
+  if (typed && !reduceMotion) {
+    var phrases = typed.getAttribute('data-typed').split('|');
+    var label = typed.textContent.trim();
+
+    typed.textContent = '';
+    var srText = document.createElement('span');
+    srText.className = 'sr-only';
+    srText.textContent = label;
+    var box = document.createElement('span');
+    box.className = 'typed-box';
+    box.setAttribute('aria-hidden', 'true');
+    phrases.forEach(function (phrase) {
+      var sizer = document.createElement('span');
+      sizer.className = 'typed-sizer';
+      sizer.textContent = phrase;
+      box.appendChild(sizer);
+    });
+    var live = document.createElement('span');
+    var text = document.createElement('span');
+    var cursor = document.createElement('span');
+    cursor.className = 'typed-cursor';
+    live.appendChild(text);
+    live.appendChild(cursor);
+    box.appendChild(live);
+    typed.appendChild(srText);
+    typed.appendChild(box);
+
+    var TYPE_MS = 85, DELETE_MS = 45, HOLD_MS = 2200, GAP_MS = 450;
+    var index = 0, length = phrases[0].length, deleting = true;
+    var timer = null, onScreen = true;
+    text.textContent = phrases[0];
+
+    var step = function () {
+      timer = null;
+      var delay;
+      if (deleting) {
+        length--;
+        if (length <= 0) { deleting = false; index = (index + 1) % phrases.length; delay = GAP_MS; }
+        else delay = DELETE_MS;
+      } else {
+        length++;
+        if (length >= phrases[index].length) { deleting = true; delay = HOLD_MS; }
+        else delay = TYPE_MS + Math.random() * 40;
+      }
+      text.textContent = phrases[index].slice(0, length);
+      // Keep the caret solid while characters change; let it blink during pauses
+      typed.classList.toggle('is-busy', delay < GAP_MS);
+      timer = setTimeout(step, delay);
+    };
+
+    // Only run while the hero is on screen and the tab is visible
+    var sync = function () {
+      var run = onScreen && !document.hidden;
+      typed.classList.toggle('is-paused', !run);
+      if (run && !timer) timer = setTimeout(step, deleting && length === phrases[index].length ? HOLD_MS : TYPE_MS);
+      else if (!run && timer) { clearTimeout(timer); timer = null; }
+    };
+    document.addEventListener('visibilitychange', sync);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        onScreen = entries[0].isIntersecting;
+        sync();
+      }).observe(typed);
+    }
+    sync();
+  }
+
+  /* ---------- 6. Scroll reveals -------------------------------------- */
+  // Targets: [data-reveal] elements, direct children of [data-reveal-children], and the
+  // parts of each project. Only elements that start off screen are hidden, and they are
+  // revealed by an IntersectionObserver, so nothing waits on scroll events.
+  var revealTargets = Array.prototype.slice.call(
+    document.querySelectorAll('[data-reveal], [data-reveal-children] > *, [data-projects] > .project > *')
+  );
+
+  if (!reduceMotion && 'IntersectionObserver' in window && revealTargets.length) {
+    var finishReveal = function (e) {
+      var el = e.currentTarget;
+      if (e.target !== el || e.propertyName !== 'opacity') return;
+      el.removeEventListener('transitionend', finishReveal);
+      el.classList.remove('reveal', 'is-visible');
+      el.style.transitionDelay = '';
+    };
+
+    var revealObserver = new IntersectionObserver(function (entries) {
+      // Elements arriving together are staggered in document order
+      entries
+        .filter(function (entry) { return entry.isIntersecting; })
+        .map(function (entry) { return entry.target; })
+        .sort(function (a, b) { return a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1; })
+        .forEach(function (el, i) {
+          revealObserver.unobserve(el);
+          if (!el.classList.contains('reveal')) return;
+          el.style.transitionDelay = Math.min(i, 4) * 80 + 'ms';
+          el.addEventListener('transitionend', finishReveal);
+          el.classList.add('is-visible');
+        });
+    }, { rootMargin: '0px 0px -6% 0px' });
+
+    var viewportH = window.innerHeight || root.clientHeight;
+    revealTargets.forEach(function (el) {
+      var rect = el.getBoundingClientRect();
+      if (rect.top < viewportH && rect.bottom > 0) return; // already visible: leave it alone
+      el.classList.add('reveal');
+      revealObserver.observe(el);
+    });
+  }
+
+  /* ---------- 7. Footer year ----------------------------------------- */
   var year = document.querySelector('[data-year]');
   if (year) year.textContent = String(new Date().getFullYear());
 })();
