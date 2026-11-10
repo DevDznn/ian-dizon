@@ -1,5 +1,6 @@
 /** Tailwind config — colours map to CSS custom properties defined in css/styles.css,
- *  so light/dark themes are handled entirely by the variables (no `dark:` variants needed). */
+ *  so light/dark themes are handled entirely by the variables (no `dark:` variants needed).
+ *  Most of the design lives in css/styles.css; Tailwind supplies the reset and spacing utilities. */
 module.exports = {
   content: ['./index.html', './js/**/*.js'],
   theme: {
@@ -13,11 +14,11 @@ module.exports = {
         accent: 'rgb(var(--accent) / <alpha-value>)',
       },
       fontFamily: {
-        serif: ['"Instrument Serif"', 'Georgia', 'serif'],
+        display: ['Archivo', '"Arial Narrow"', 'sans-serif'],
         sans: ['Geist', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         mono: ['"Geist Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
-      maxWidth: { page: '88rem' },
+      maxWidth: { page: '90rem' },
     },
   },
   plugins: [],

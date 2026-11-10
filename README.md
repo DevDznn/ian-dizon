@@ -43,25 +43,15 @@ Everything lives in `index.html`. Each section is marked with a banner comment.
 
 | What | Where |
 |---|---|
-| Project text, role, stack | the `<article class="project">` blocks under **SELECTED WORK** |
-| Live / source links | the `<a class="project-link">` inside each project. If there is no link, leave it out. Never leave an empty `href`. |
-| Filter category | the `data-category` value on each article. Use one or more of `websites`, `webapps` or `inventory`. Also update the counts on the filter buttons. |
-| Experience / education | the `<ol>` and `<ul>` under **EXPERIENCE + EDUCATION** |
-| Contact details | the **CONTACT** section, the mobile menu and the footer. Search for `dznn20` and `tel:`. |
-
-### Adding the missing screenshots
-
-RENTME, ECOTEC RMS and Chang Thai Tea currently show a labelled placeholder (`.shot-pending`). To replace one:
-
-1. Capture the interface at **1440×900**, then export it as WebP at two sizes:
-   - `assets/images/<name>.webp` at 1600 px wide
-   - `assets/images/<name>-800.webp` at 800 px wide
-
-   The names are `rentme`, `ecotec-rms` and `chang-thai-tea`.
-2. In `index.html`, replace the `<div class="shot shot-pending">…</div>` block with a figure copied from another project, for example Dilleen's. Then update the `src`, `srcset`, the domain in `.shot-bar` and the `alt` text.
-3. Optionally, add a phone-sized screenshot (`<name>-mobile.webp`, 520 px wide) using the `.shot-phone` block.
-
-For **ECOTEC RMS**, only publish screenshots you have permission to use, and blur or remove client data first.
+| Project text, role, stack | the `<article class="project">` blocks inside the rail under **03 · SELECTED WORK**. The detailed list lives in each card's `<details>` ("What I did"). |
+| Project colour | the `--tone` / `--tone-ink` inline style on each article (the plate behind the screenshot) |
+| Live / source links | the `.btn` links in `.project-links`. If there is no link, leave it out. Never leave an empty `href`. |
+| Filter category | the `data-category` value on each article. Use one or more of `websites`, `webapps` or `inventory`. Also update the counts on the filter buttons and the `01 / 10` rail counter. |
+| Skills | the four `.stack-row` blocks under **02 · STACK** |
+| Experience / education | the `<ol>` and `<ul>` under **01 · ABOUT** |
+| Process | the four `.step` items under **04 · PROCESS** |
+| Ticker | the `.ticker__track` at the top of `<body>` (the phrases appear twice so the loop is seamless) |
+| Contact details | the **CONTACT** section, the mobile menu, the footer and the JSON-LD in `<head>`. Search for `dznn20` and `tel:`. |
 
 ## Where the screenshots came from
 
@@ -74,6 +64,8 @@ The screenshots were captured on 20 Oct 2026 with Playwright at 1440×900 deskto
 | Dilleen Dental | https://dilleen-dental.vercel.app |
 | Helms & White | https://helms-white.vercel.app |
 | Job Abroad | https://jobabroad.online |
+| South Cairns Dental | https://southcairnsdental.com.au/ (captured 10 Nov 2026). Live site runs the custom `south-cairns-dental` theme with Elementor and ThinkRank. |
+| Redlynch Dental | https://redlynchdental.com.au/ (captured 10 Nov 2026). Live site runs the custom `redlynch-dental` theme with Elementor and ThinkRank. |
 
 ## Theme behaviour
 
@@ -90,10 +82,18 @@ The screenshots were captured on 20 Oct 2026 with Playwright at 1440×900 deskto
 - Set `og:url` and change `og:image` to an absolute URL on your final domain.
 - Re-check that the live links still point at the right sites.
 
+## Design
+
+Editorial layout: condensed **Archivo** display type (pulled to 66% width), **Geist** for body text and **Geist Mono** for labels, on a warm bone / near-black palette with one vermilion accent. Tokens are CSS variables at the top of `css/styles.css`.
+
 ## Motion
 
-All motion is CSS transitions/keyframes plus a little vanilla JS (no libraries).
+All motion is CSS transitions/keyframes plus a little vanilla JS (no libraries). `prefers-reduced-motion` turns all of it off.
 
-- **Hero entrance**: the `.intro` / `.intro--N` classes in `index.html` set the order (CSS only).
-- **Typed role**: put the phrases in the `data-typed` attribute, separated by `|`. The text inside the element is the first phrase. It's what shows without JS and what screen readers announce.
-- **Scroll reveals**: add `data-reveal` to fade an element in, or `data-reveal-children` to fade its direct children in with a short stagger. Each part of a `.project` is revealed automatically. Elements that are already on screen at load are never hidden.
+- **Hero**: each word of the name rises out of a mask; the "WP" badge's ring text rotates slowly.
+- **Ticker**: a slow marquee, paused on hover.
+- **Nav indicator**: a pill slides to the link of the section in view (`[data-nav-indicator]`).
+- **Manifesto**: highlight bars sweep in when the band scrolls into view.
+- **Work rail**: native horizontal scroll with snap points; prev/next buttons, counter, progress bar and mouse drag are added by `main.js`. Without JS it still scrolls.
+- **Process**: the dashed connector draws in when the section is in view.
+- **Scroll reveals**: add `data-reveal` to fade an element in, or `data-reveal-children` to fade its direct children in with a short stagger. Elements already on screen at load are never hidden.
